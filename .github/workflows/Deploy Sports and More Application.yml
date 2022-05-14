@@ -23,7 +23,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           
       - name: Upload Artifact to s3
-        working-directory: ~
+        working-directory: /
         run: aws s3 cp * s3://${{ env.S3BUCKET }}/ 
         
   deploy:
@@ -37,6 +37,6 @@ jobs:
         role-session-name: GitHub-Action-Role
         aws-region: ${{ env.AWS_REGION }}
     - run: |
-        echo "Deploying branch ${{ env.GITHUB_REF }} to ${{ github.event.inputs.environment }}"
+        echo "Deploying branch ${{ env.GITHUB_REF }} to Production"
         commit_hash=`git rev-parse HEAD`
         aws deploy create-deployment --application-name Sportsandmore-Deployments --deployment-group-name Sportsandmore-Web-DG --github-location repository=$GITHUB_REPOSITORY,commitId=$commit_hash --ignore-application-stop-failures
